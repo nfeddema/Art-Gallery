@@ -1,0 +1,1 @@
+Static file ordering differs depending on server.  Mine is currently set up for Gunicorn
