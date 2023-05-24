@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'art_gallery',
+    'django_extensions',
     'django_cleanup.apps.CleanupConfig',
 ]
 
