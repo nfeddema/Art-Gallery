@@ -6,6 +6,7 @@ from io import BytesIO
 from django.core.files.base import ContentFile
 from sys import getsizeof
 from os.path import splitext
+from pathlib import Path
 
 class ArtPiece(models.Model):
     title = models.CharField(blank=True, max_length=64)
@@ -67,15 +68,19 @@ class ArtImage(models.Model):
         self.large.file.seek(0)
         # Should this be self.large or self.large.file?
         with Image.open(self.large.file) as image:
-            resized_img = ImageOps.fit(image, (640, 480))
+            resized_img = MyImageOps.fit(image, 640, 480)
             img_info = image.info
+
+            large_filename = Path(self.large.name)
+            thumb_filename = large_filename.with_stem(large_filename.stem + '_thumb').name
 
             ImageFile.MAXBLOCK = max(ImageFile.MAXBLOCK, resized_img.size[0] * resized_img.size[1])
             temp_thumb = BytesIO()
             resized_img.save(temp_thumb, format=image.format, quality=99, **img_info)
             temp_thumb.seek(0)
             
-            self.display.save(self.large.file.name, ContentFile(temp_thumb.read()), save=False)
+            # Remove "file" from name
+            self.display.save(thumb_filename, ContentFile(temp_thumb.read()), save=False)
             
             temp_thumb.close()
 
@@ -154,10 +159,10 @@ class ArtImage(models.Model):
     #     return cropped_img.resize((new_width, new_height), Image.BICUBIC)
 
 # Do I need inheritance here?
-class ImageOps():
+class MyImageOps():
     # If this fails I should try PIL.ImageOps.fit
     def fit(image, new_width, new_height):
-        cropped_img = ImageOps.get_cropped_image(image, new_width/new_height)
+        cropped_img = MyImageOps.get_cropped_image(image, new_width/new_height)
         return cropped_img.resize((new_width, new_height), Image.BICUBIC)
     
     # Crop image to aspect ratio
