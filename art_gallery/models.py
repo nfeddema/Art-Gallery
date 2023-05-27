@@ -7,6 +7,7 @@ from django.core.files.base import ContentFile
 from sys import getsizeof
 from os.path import splitext
 from pathlib import Path
+from django.db.models.functions import Lower
 
 class ArtPiece(models.Model):
     title = models.CharField(blank=True, max_length=64)
@@ -24,9 +25,14 @@ class ArtPiece(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def featured_image(self):
+        for art_image in self.artimage_set.all():
+            if art_image.featured:
+                return art_image
 
 class Category(models.Model):
-    title = models.CharField(max_length=64)
+    title = models.CharField(max_length=64, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     art_pieces = models.ManyToManyField(ArtPiece, through='Categorized', related_name='categories')
@@ -36,9 +42,12 @@ class Category(models.Model):
 
     #def get_absolute_url(self):
     #    return #reverse('category-detail', kwargs={'slug': self.slug})
-    
+        
     class Meta:
         verbose_name_plural = "categories"
+        constraints = [
+            models.UniqueConstraint(Lower('title'), name='unique_lower_title_category')
+        ]
 
 # Junction Table
 class Categorized(models.Model):
