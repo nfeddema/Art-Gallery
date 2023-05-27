@@ -1,11 +1,26 @@
 from django.contrib import admin
-from .models import ArtPiece
-from .models import Category
-from .models import ArtImage
+from .models import ArtPiece, Category, ArtImage, Categorized
 
-class ArtImageAdmin(admin.ModelAdmin):
+class CategorizedInline(admin.StackedInline):
+    model = Categorized
+    extra = 1
+
+class ArtImageInline(admin.TabularInline):
+    model = ArtImage
+    extra = 1
     fields = ('art_piece', 'featured', 'large')
 
-admin.site.register(ArtPiece)
-admin.site.register(Category)
-admin.site.register(ArtImage, ArtImageAdmin)
+class ArtPieceAdmin(admin.ModelAdmin):
+    fields = ('title', 'description', 'dimensions', 'materials', 'price', 'available')
+    inlines = [CategorizedInline, ArtImageInline]
+
+class CategoryAdmin(admin.ModelAdmin):
+    inlines = [CategorizedInline]
+    #filter_horizontal = ('art_pieces',)
+
+#class ArtImageAdmin(admin.ModelAdmin):
+#    fields = ('art_piece', 'featured', 'large')
+
+admin.site.register(ArtPiece, ArtPieceAdmin)
+admin.site.register(Category, CategoryAdmin)
+#admin.site.register(ArtImage, ArtImageAdmin)

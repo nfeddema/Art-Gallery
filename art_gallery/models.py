@@ -14,13 +14,13 @@ class ArtPiece(models.Model):
     dimensions = models.CharField(blank=True, max_length=128)
     materials = models.CharField(blank=True, max_length=256)
     price = models.DecimalField(null=True, blank=True, max_digits=6, decimal_places=2)
-    available = models.BooleanField()
+    available = models.BooleanField(default=True)
+    #categories = models.ManyToManyField(Category, through='Categorized', related_name='art_pieces')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # Has_one image
     # Has_many secondary_images
-    # unnecessary: categories = models.ManyToManyField(Category, through='Categorized', related_name='art_pieces')
 
     def __str__(self):
         return self.title
@@ -68,7 +68,7 @@ class ArtImage(models.Model):
         self.large.file.seek(0)
         # Should this be self.large or self.large.file?
         with Image.open(self.large.file) as image:
-            resized_img = MyImageOps.fit(image, 640, 480)
+            resized_img = MyImageOps.fit(image, 480, 640)
             img_info = image.info
 
             large_filename = Path(self.large.name)
