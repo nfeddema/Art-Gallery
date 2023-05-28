@@ -25,13 +25,18 @@ def category(request, category):
     images = []
 
     category = Category.objects.get(title=category)
-    art_pieces = ArtPiece.objects.filter(category=category)
+    art_pieces = ArtPiece.objects.filter(categories=category)
 
     for art_piece in art_pieces:
         if art_piece.featured_image:
-            images.append(art_piece.featured_image)
+            img = art_piece.featured_image
+            #img.short_description = img.art_piece.description[:128]
+            images.append(img)
+
+   # for x in images:
+   #     x.short_description = x.art_piece.description[:128]
 
     context['images'] = images
     context['category'] = category
 
-    return render(request, '', context)
+    return render(request, 'main/category.html', context)
