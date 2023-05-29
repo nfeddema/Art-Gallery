@@ -19,8 +19,7 @@ class CategoryAdmin(admin.ModelAdmin):
     #filter_horizontal = ('art_pieces',)
 
 #class ArtImageAdmin(admin.ModelAdmin):
-#    fields = ('art_piece', 'featured', 'large')
 
 admin.site.register(ArtPiece, ArtPieceAdmin)
 admin.site.register(Category, CategoryAdmin)
-#admin.site.register(ArtImage, ArtImageAdmin)
+#admin.site.register(ArtImage)

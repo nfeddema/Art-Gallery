@@ -26,6 +26,12 @@ class ArtPiece(models.Model):
     def __str__(self):
         return self.title
     
+    def is_available(self):
+        if self.available:
+            return 'Yes'
+        else:
+            return 'No'
+    
     def featured_image(self):
         for art_image in self.artimage_set.all():
             if art_image.featured:
