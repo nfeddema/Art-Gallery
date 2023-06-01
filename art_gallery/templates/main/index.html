@@ -205,11 +205,6 @@
 
               <img src="{{MEDIA_URL}}{{art_piece.featured_image.display}}" alt="">
 
-              <div class="card-body">
-                <p class="card-text">{{ art_piece.short_description }}. . .
-                  <a href="{% url 'art-piece' art_piece.id %}">(view)</a>
-                </p>
-              </div>
             </div>
           </div>
         {% endfor %}

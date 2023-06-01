@@ -30,7 +30,7 @@ def category(request, category):
 
     for art_piece in art_pieces:
         if art_piece.featured_image:
-            art_piece.short_description = art_piece.description[:128]
+            #art_piece.short_description = art_piece.description[:128]
             art_piece_list.append(art_piece)
 
     context['art_pieces'] = art_piece_list

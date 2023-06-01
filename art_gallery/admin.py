@@ -22,4 +22,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(ArtPiece, ArtPieceAdmin)
 admin.site.register(Category, CategoryAdmin)
-#admin.site.register(ArtImage)
+admin.site.register(ArtImage)
