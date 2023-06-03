@@ -2,7 +2,7 @@
 
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="{% static 'assets/js/color-modes.js' %}"></script>
+  <head>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -202,9 +202,8 @@
         {% for art_piece in art_pieces %}
           <div class="col">
             <div class="card shadow-sm">
-
               <img src="{{MEDIA_URL}}{{art_piece.featured_image.display}}" alt="">
-
+              <a href="{% url 'art-piece' art_piece.id %}" class="stretched-link"></a>
             </div>
           </div>
         {% endfor %}

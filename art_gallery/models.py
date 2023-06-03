@@ -8,6 +8,7 @@ from sys import getsizeof
 from os.path import splitext
 from pathlib import Path
 from django.db.models.functions import Lower
+from django.db.models import Q
 
 class ArtPiece(models.Model):
     title = models.CharField(blank=True, max_length=64)
@@ -66,6 +67,11 @@ class ArtImage(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def set_as_featured(self):
+        for art_image in self.art_piece.artimage_set.filter(~Q(id=self.id)):
+            art_image.featured = False
+            art_image.save()
+
     def __str__(self):
         return self.art_piece.title
     
@@ -97,6 +103,9 @@ class ArtImage(models.Model):
                 
                 self.display.save(thumb_filename, ContentFile(temp_thumb.read()), save=False)         
                 temp_thumb.close()
+
+        if self.featured:
+            self.set_as_featured()
         
         super(ArtImage, self).save(*args, **kwargs)
     
