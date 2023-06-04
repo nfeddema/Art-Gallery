@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import *
+from random import shuffle
 
 def home(request, category=None):
     categories = Category.objects.all()
@@ -11,10 +12,11 @@ def home(request, category=None):
     art_pieces = ArtPiece.objects.all()
 
     for art_piece in art_pieces:
-        if art_piece.featured_image:
+        if art_piece.featured_image():
             art_piece.short_description = art_piece.description[:128]
             art_piece_list.append(art_piece)
 
+    shuffle(art_piece_list)
     context['art_pieces'] = art_piece_list
 
     return render(request, 'main/index.html', context)
@@ -29,10 +31,11 @@ def category(request, category):
     art_pieces = ArtPiece.objects.filter(categories=category)
 
     for art_piece in art_pieces:
-        if art_piece.featured_image:
+        if art_piece.featured_image():
             #art_piece.short_description = art_piece.description[:128]
             art_piece_list.append(art_piece)
 
+    shuffle(art_piece_list)
     context['art_pieces'] = art_piece_list
     context['category'] = category
 

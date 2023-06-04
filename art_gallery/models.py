@@ -1,11 +1,8 @@
 from django.db import models
 from PIL import Image, ImageFile
 from math import isclose
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from django.core.files.base import ContentFile
-from sys import getsizeof
-from os.path import splitext
 from pathlib import Path
 from django.db.models.functions import Lower
 from django.db.models import Q
