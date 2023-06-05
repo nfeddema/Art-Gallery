@@ -2,7 +2,6 @@
 
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-  <head><script src="{% static 'assets/js/color-modes.js' %}"></script>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -177,7 +176,7 @@
           <hr>
           <p>Materials: {{ art_piece.materials }}</p>
           <hr>
-          <p>Price: ${{ art_piece.price }}</p>
+          <p>Price: {{ art_piece.pretty_price }}</p>
           <hr>
           <p>Available: {{ art_piece.is_available }}</p>
           <hr>
